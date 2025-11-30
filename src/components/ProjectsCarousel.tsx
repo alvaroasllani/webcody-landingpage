@@ -37,9 +37,9 @@ const projects = [
 const ProjectsCarousel = () => {
   return (
     <section id="proyectos" className="py-20 bg-background">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-4 md:px-6 lg:px-12 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
             <span className="gradient-text">Nuestros Proyectos</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -54,10 +54,10 @@ const ProjectsCarousel = () => {
             const isFullWidth = index === 0;
 
             return (
-              <div key={project.id} className={`group ${isFullWidth ? 'md:col-span-2' : ''} relative overflow-hidden rounded-3xl bg-slate-900/50 backdrop-blur-sm border border-white/10 shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border-primary/50 hover:shadow-vibrant cursor-pointer`}>
-                <div className="grid md:grid-cols-2 gap-0 h-full">
+              <div key={project.id} className={`group ${isFullWidth ? 'col-span-1 md:col-span-2' : 'col-span-1'} relative overflow-hidden rounded-3xl bg-slate-900/50 backdrop-blur-sm border border-white/10 shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border-primary/50 hover:shadow-vibrant cursor-pointer`}>
+                <div className="flex flex-col md:flex-row h-full">
                   {/* Image Side - Alternating */}
-                  <div className={`relative h-64 md:h-auto overflow-hidden ${index % 2 === 1 ? 'md:order-2' : ''}`}>
+                  <div className={`relative w-full h-64 md:h-auto md:w-1/2 overflow-hidden ${index % 2 === 1 ? 'md:order-2' : ''}`}>
                     <img
                       src={project.image}
                       alt={project.title}
@@ -67,7 +67,7 @@ const ProjectsCarousel = () => {
                   </div>
 
                   {/* Content Side */}
-                  <div className="p-8 flex flex-col justify-center">
+                  <div className="p-8 flex flex-col justify-center w-full md:w-1/2">
                     <div className={`w-12 h-12 rounded-xl ${project.color} flex items-center justify-center mb-6`}>
                       <IconComponent className="w-6 h-6 text-white" />
                     </div>

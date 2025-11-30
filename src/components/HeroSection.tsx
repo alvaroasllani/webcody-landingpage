@@ -10,9 +10,9 @@ const HeroSection = () => {
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-secondary/20 rounded-full blur-3xl animate-float animation-delay-400 opacity-50"></div>
       </div>
 
-      <div className="container mx-auto px-6 text-center relative z-10">
+      <div className="container mx-auto px-4 md:px-6 lg:px-12 text-center relative z-10">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 animate-fade-in-up text-white">
+          <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold mb-6 animate-fade-in-up text-white">
             <span className="block">Desarrollo Web</span>
             <span className="text-primary">Innovador</span>
           </h1>

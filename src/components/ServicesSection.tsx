@@ -11,7 +11,7 @@ const ServicesSection = () => {
         <div className="absolute bottom-1/4 -right-64 w-96 h-96 bg-secondary/20 rounded-full blur-3xl opacity-50"></div>
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 md:px-6 lg:px-12 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
             Nuestros <span className="text-primary">Servicios</span>
@@ -22,10 +22,10 @@ const ServicesSection = () => {
         </div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
 
           {/* Main Card: Desarrollo Web Fullstack (2x2) */}
-          <div className="md:col-span-2 md:row-span-2 group relative overflow-hidden rounded-3xl bg-slate-900/50 backdrop-blur-xl border border-white/10 shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border-primary/50 hover:shadow-vibrant">
+          <div className="col-span-1 md:col-span-2 md:row-span-2 group relative overflow-hidden rounded-3xl bg-slate-900/50 backdrop-blur-xl border border-white/10 shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border-primary/50 hover:shadow-vibrant">
             <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
               <Code2 className="w-64 h-64 text-primary" />
             </div>
@@ -68,7 +68,7 @@ const ServicesSection = () => {
           </div>
 
           {/* Secondary Card: Apps Móviles (1x2 Vertical) */}
-          <div className="md:col-span-1 md:row-span-2 group relative overflow-hidden rounded-3xl bg-slate-900/50 backdrop-blur-xl border border-white/10 shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border-primary/50 hover:shadow-vibrant">
+          <div className="col-span-1 md:col-span-1 md:row-span-2 group relative overflow-hidden rounded-3xl bg-slate-900/50 backdrop-blur-xl border border-white/10 shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border-primary/50 hover:shadow-vibrant">
             <div className="absolute -bottom-12 -right-12 w-48 h-48 bg-secondary/10 rounded-full blur-2xl group-hover:bg-secondary/20 transition-colors"></div>
 
             <div className="p-8 h-full flex flex-col relative z-10">
@@ -101,7 +101,7 @@ const ServicesSection = () => {
           </div>
 
           {/* Tertiary Card: Sistemas de Ventas (1x1) */}
-          <div className="md:col-span-1 md:row-span-1 group relative overflow-hidden rounded-3xl bg-slate-900/50 backdrop-blur-xl border border-white/10 shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border-primary/50 hover:shadow-vibrant">
+          <div className="col-span-1 md:col-span-1 md:row-span-1 group relative overflow-hidden rounded-3xl bg-slate-900/50 backdrop-blur-xl border border-white/10 shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border-primary/50 hover:shadow-vibrant">
             <div className="p-8 h-full flex flex-col justify-between">
               <div>
                 <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4">
@@ -118,7 +118,7 @@ const ServicesSection = () => {
           </div>
 
           {/* Tertiary Card: E-commerce (2x1 Wide) */}
-          <div className="md:col-span-2 md:row-span-1 group relative overflow-hidden rounded-3xl bg-slate-900/50 backdrop-blur-xl border border-white/10 shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border-primary/50 hover:shadow-vibrant">
+          <div className="col-span-1 md:col-span-2 md:row-span-1 group relative overflow-hidden rounded-3xl bg-slate-900/50 backdrop-blur-xl border border-white/10 shadow-lg transition-all duration-300 ease-in-out hover:scale-[1.02] hover:border-primary/50 hover:shadow-vibrant">
             <div className="p-8 h-full flex flex-col md:flex-row items-center gap-8">
               <div className="flex-1">
                 <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center mb-4">
