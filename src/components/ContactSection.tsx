@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin, Twitter } from "lucide-react";
+import { motion } from "framer-motion";
+import ScrollReveal from "./ScrollReveal";
 
 const WhatsAppIcon = () => (
   <svg viewBox="0 0 24 24" className="w-6 h-6 mr-3 fill-current" xmlns="http://www.w3.org/2000/svg">
@@ -9,57 +11,83 @@ const WhatsAppIcon = () => (
 
 const ContactSection = () => {
   return (
-    <section id="contacto" className="py-24 bg-background">
-      <div className="container mx-auto px-6 text-center">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold mb-8 text-foreground">
-            ¿Hablamos de tu proyecto?
-          </h2>
+    <section id="contacto" className="py-24 relative overflow-hidden" style={{ backgroundColor: '#0a0a1f' }}>
+      {/* Glow effect */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-radial from-cyan-500/10 via-purple-500/5 to-transparent blur-3xl"></div>
+      </div>
 
-          <p className="text-xl text-muted-foreground mb-12">
-            Estoy disponible para nuevos retos. Si tienes una idea o necesitas ayuda con tu desarrollo web, ¡escríbeme!
-          </p>
+      <div className="container mx-auto px-6 text-center relative z-10">
+        <ScrollReveal>
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold mb-8 text-white">
+              ¿Hablamos de tu <span className="gradient-text">proyecto</span>?
+            </h2>
 
-          <div className="flex flex-col items-center gap-8">
-            <Button
-              asChild
-              size="lg"
-              className="bg-green-600 hover:bg-green-700 text-white text-xl px-8 py-6 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
-            >
-              <a
-                href="https://wa.me/59163970427"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center"
+            <p className="text-xl text-slate-300 mb-12">
+              Estoy disponible para nuevos retos. Si tienes una idea o necesitas ayuda con tu desarrollo web, ¡escríbeme!
+            </p>
+
+            <div className="flex flex-col items-center gap-8">
+              {/* Neon WhatsApp Button */}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <WhatsAppIcon />
-                Hablemos por WhatsApp
-              </a>
-            </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  className="relative overflow-hidden text-xl px-8 py-6 rounded-full font-bold transition-all duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, #00f2ff 0%, #bd00ff 100%)',
+                    boxShadow: '0 0 30px rgba(0, 242, 255, 0.4), 0 0 60px rgba(189, 0, 255, 0.2)',
+                  }}
+                >
+                  <a
+                    href="https://wa.me/59163970427"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-white"
+                  >
+                    <WhatsAppIcon />
+                    Hablemos por WhatsApp
+                  </a>
+                </Button>
+              </motion.div>
 
-            <div className="text-muted-foreground">
-              <p className="mb-4">O envíame un correo a</p>
-              <a
-                href="mailto:alvarowebcody@gmail.com"
-                className="text-lg font-medium text-foreground hover:underline"
-              >
-                alvarowebcody@gmail.com
-              </a>
-            </div>
+              <div className="text-slate-400">
+                <p className="mb-4">O envíame un correo a</p>
+                <a
+                  href="mailto:alvarowebcody@gmail.com"
+                  className="text-lg font-medium neon-text-cyan hover:underline"
+                >
+                  alvarowebcody@gmail.com
+                </a>
+              </div>
 
-            <div className="flex gap-6 mt-4">
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
-                <Github className="w-6 h-6" />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-blue-600 transition-colors">
-                <Linkedin className="w-6 h-6" />
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-blue-400 transition-colors">
-                <Twitter className="w-6 h-6" />
-              </a>
+              {/* Social Links with Neon Hover */}
+              <div className="flex gap-6 mt-4">
+                {[
+                  { href: "https://github.com", icon: Github, color: "hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" },
+                  { href: "https://linkedin.com", icon: Linkedin, color: "hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(0,242,255,0.6)]" },
+                  { href: "https://twitter.com", icon: Twitter, color: "hover:text-purple-400 hover:drop-shadow-[0_0_8px_rgba(189,0,255,0.6)]" },
+                ].map((social, index) => (
+                  <motion.a
+                    key={index}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`text-slate-500 transition-all duration-300 ${social.color}`}
+                    whileHover={{ scale: 1.2, y: -2 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <social.icon className="w-6 h-6" />
+                  </motion.a>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );
