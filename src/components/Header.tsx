@@ -1,59 +1,73 @@
-import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 const Header = () => {
+  const [activeSection, setActiveSection] = useState('inicio');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['inicio', 'servicios', 'proyectos', 'contacto'];
+      // The trigger point is 1/3 down the viewport
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <motion.header
-      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg border-b border-cyan-500/10"
-      style={{ backgroundColor: 'rgba(10, 10, 31, 0.8)' }}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
-    >
-      <div className="container mx-auto px-4 md:px-6 lg:px-12 py-4 flex items-center justify-between">
-        <motion.div
-          className="flex items-center space-x-3"
-          whileHover={{ scale: 1.02 }}
-        >
+    <header className="fixed top-0 left-0 right-0 z-50 bg-nd-black/70 backdrop-blur-md border-b border-nd-border">
+      <div className="container mx-auto px-4 md:px-6 lg:px-12 h-20 flex items-center justify-between">
+        <div className="flex items-center space-x-4">
           <img
             src="/logo.png"
             alt="WebCody Logo"
-            className="w-12 h-12"
-            style={{ filter: 'drop-shadow(0 0 8px rgba(0, 242, 255, 0.4))' }}
+            className="w-8 h-8 grayscale"
           />
-          <h1 className="text-2xl font-bold gradient-text">WebCody</h1>
-        </motion.div>
+          <span className="label-font text-nd-textDisplay font-bold text-sm hover:text-nd-accent transition-colors cursor-pointer">
+            [ WEBCODY ]
+          </span>
+        </div>
 
-        <nav className="hidden md:flex items-center space-x-8">
-          {['Inicio', 'Servicios', 'Proyectos', 'Contacto'].map((item) => (
-            <motion.a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              className="text-slate-400 hover:text-cyan-400 transition-colors duration-300 relative group"
-              whileHover={{ y: -2 }}
-            >
-              {item}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300" />
-            </motion.a>
-          ))}
+        <nav className="hidden md:flex items-center space-x-6 label-font text-xs">
+          {['Inicio', 'Servicios', 'Proyectos', 'Contacto'].map((item) => {
+            const id = item.toLowerCase();
+            const isActive = activeSection === id;
+            return (
+              <a
+                key={item}
+                href={`#${id}`}
+                className={`${isActive ? 'text-nd-textDisplay' : 'text-nd-textSecondary'} hover:text-nd-textDisplay transition-colors duration-200`}
+              >
+                {isActive ? `[ ${item.toUpperCase()} ]` : item.toUpperCase()}
+              </a>
+            );
+          })}
         </nav>
 
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          <Button
-            className="btn-hero"
+        <div>
+          <button
+            className="nothing-btn-secondary h-10 px-6 text-[11px] bg-nd-black/50"
             onClick={() => {
               const contactoSection = document.getElementById('contacto');
               contactoSection?.scrollIntoView({ behavior: 'smooth' });
             }}
           >
-            Contáctanos
-          </Button>
-        </motion.div>
+            CONTÁCTANOS
+          </button>
+        </div>
       </div>
-    </motion.header>
+    </header>
   );
 };
 

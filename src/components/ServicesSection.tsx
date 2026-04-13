@@ -1,300 +1,190 @@
-import { useRef, useState, MouseEvent as ReactMouseEvent } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { Globe, ShoppingCart, BarChart3, Smartphone, Code2, Terminal } from 'lucide-react';
+import { Globe, ShoppingCart, BarChart3, Smartphone, Code2, Database } from 'lucide-react';
+import { useState } from 'react';
 
-// ========== SPOTLIGHT CARD COMPONENT ==========
-interface SpotlightCardProps {
-  children: React.ReactNode;
-  className?: string;
-}
+const ServicesSection = () => {
+  const [openAccordion, setOpenAccordion] = useState<number | null>(null);
+  const [activeDesktopIndex, setActiveDesktopIndex] = useState(0);
 
-const SpotlightCard = ({ children, className = '' }: SpotlightCardProps) => {
-  const divRef = useRef<HTMLDivElement>(null);
-  const [isFocused, setIsFocused] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState(0);
+  const services = [
+    {
+      icon: Code2,
+      label: '[ SERVICIOS_01 ]',
+      title: 'Desarrollo Web Fullstack',
+      desc: 'Creamos aplicaciones web modernas, rápidas y escalables con las últimas tecnologías. Diseñado para rendimiento y mantenibilidad.',
+      stats: [
+        { label: 'STACK', value: 'REACT / NODE' },
+        { label: 'DB', value: 'POSTGRES' }
+      ]
+    },
+    {
+      icon: Smartphone,
+      label: '[ SERVICIOS_02 ]',
+      title: 'Apps Móviles',
+      desc: 'Desarrollo nativo y multiplataforma para iOS y Android. Interfaces de usuario fluidas y acceso a hardware nativo.',
+      stats: [
+        { label: 'PLATAFORMAS', value: 'IOS+AND' },
+        { label: 'NATIVE', value: 'YES' }
+      ]
+    },
+    {
+      icon: BarChart3,
+      label: '[ SERVICIOS_03 ]',
+      title: 'Sistemas CRM',
+      desc: 'Automatiza tu negocio con software de gestión personalizado. Interfaces basadas en datos que mejoran la eficiencia del equipo.',
+      stats: [
+        { label: 'ANALÍTICA', value: 'TIEMPO REAL' },
+        { label: 'AUTOMACIÓN', value: 'ALTA' }
+      ]
+    },
+    {
+      icon: ShoppingCart,
+      label: '[ SERVICIOS_04 ]',
+      title: 'E-commerce',
+      desc: 'Tiendas online optimizadas con pasarelas de pago, gestión de inventario y dashboards financieros precisos.',
+      stats: [
+        { label: 'PAGOS', value: 'MÚLTIPLES' },
+        { label: 'UPTIME', value: '99.9%' }
+      ]
+    },
+    {
+      icon: Code2,
+      label: '[ SERVICIOS_05 ]',
+      title: '+ Soluciones a Medida',
+      desc: 'Construimos sistemas tecnológicos que se adaptan exactamente a tus requerimientos operativos. Si puedes imaginarlo, podemos estructurarlo en código.',
+      stats: [
+        { label: 'ARQUITECTURA', value: 'PERSONALIZADA' },
+        { label: 'SOPORTE', value: 'CONTINUO' }
+      ]
+    }
+  ];
 
-  const handleMouseMove = (e: ReactMouseEvent<HTMLDivElement>) => {
-    if (!divRef.current) return;
-    const rect = divRef.current.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
-  const handleMouseEnter = () => {
-    setIsFocused(true);
-    setOpacity(1);
-  };
-
-  const handleMouseLeave = () => {
-    setIsFocused(false);
-    setOpacity(0);
-  };
+  const activeDesktopService = services[activeDesktopIndex];
 
   return (
-    <motion.div
-      ref={divRef}
-      className={`relative overflow-hidden rounded-3xl bg-white/[0.03] backdrop-blur-lg border border-white/10 ${className}`}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      whileHover={{ scale: 1.02, y: -4 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
-    >
-      {/* Spotlight gradient that follows cursor */}
-      <div
-        className="pointer-events-none absolute inset-0 transition-opacity duration-300"
-        style={{
-          opacity,
-          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(0, 242, 255, 0.08), transparent 40%)`,
-        }}
-      />
-
-      {/* Glow border effect */}
-      <div
-        className="pointer-events-none absolute inset-0 transition-opacity duration-300 rounded-3xl"
-        style={{
-          opacity: isFocused ? 1 : 0,
-          boxShadow: 'inset 0 0 0 1px rgba(0, 242, 255, 0.2)',
-        }}
-      />
-
-      {/* Noise texture overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.02] pointer-events-none"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-        }}
-      />
-
-      {children}
-    </motion.div>
-  );
-};
-
-// ========== TERMINAL CODE VISUAL ==========
-const TerminalCode = () => (
-  <motion.div
-    className="bg-black/80 backdrop-blur-sm rounded-xl p-4 border border-cyan-500/20 shadow-lg shadow-cyan-500/10 max-w-sm"
-    initial={{ opacity: 0.6 }}
-    whileHover={{ opacity: 1 }}
-    transition={{ duration: 0.3 }}
-  >
-    <div className="flex items-center gap-2 mb-3 pb-2 border-b border-white/10">
-      <div className="w-3 h-3 rounded-full bg-red-500" />
-      <div className="w-3 h-3 rounded-full bg-yellow-500" />
-      <div className="w-3 h-3 rounded-full bg-green-500" />
-      <span className="ml-2 text-xs text-slate-500 font-mono">terminal</span>
-    </div>
-    <div className="font-mono text-xs space-y-1">
-      <p className="text-slate-500">$ npm install @webcody/future</p>
-      <p className="text-cyan-400">→ Downloading innovation...</p>
-      <p className="text-green-400">✓ Success! Your app is ready 🚀</p>
-      <motion.span
-        className="inline-block text-cyan-400"
-        animate={{ opacity: [1, 0] }}
-        transition={{ duration: 0.8, repeat: Infinity }}
-      >
-        █
-      </motion.span>
-    </div>
-  </motion.div>
-);
-
-// ========== FLOATING PHONE MOCKUP ==========
-const FloatingPhone = () => (
-  <motion.div
-    className="relative"
-    animate={{ y: [0, -10, 0] }}
-    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-  >
-    <div className="w-28 h-48 bg-black/80 backdrop-blur-sm rounded-[1.5rem] border border-purple-500/30 p-1.5 shadow-lg shadow-purple-500/20">
-      <div className="w-full h-full bg-slate-900/80 rounded-[1.2rem] overflow-hidden relative">
-        {/* Notch */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-4 bg-black rounded-b-xl" />
-
-        {/* Screen content */}
-        <div className="pt-6 px-2 space-y-2">
-          <div className="w-full h-12 bg-gradient-to-r from-purple-500/30 to-cyan-500/30 rounded-lg animate-pulse" />
-          <div className="w-full h-6 bg-white/5 rounded-md" />
-          <div className="w-3/4 h-6 bg-white/5 rounded-md" />
-          <div className="w-full h-8 bg-cyan-500/20 rounded-lg mt-4 flex items-center justify-center">
-            <span className="text-[8px] text-cyan-400 font-medium">DOWNLOAD</span>
+    <section id="servicios" className="py-24 bg-transparent text-nd-textPrimary border-t border-nd-border">
+      <div className="container mx-auto px-4 md:px-6 lg:px-12">
+        <div className="mb-16">
+          <h2 className="display-font text-5xl md:text-6xl text-nd-textDisplay uppercase tracking-tight">
+            NUESTROS<br />SE<span className="text-nd-accent">R</span>VICIOS
+          </h2>
+          <div className="mt-8 label-font text-nd-textSecondary text-xs">
+            / SOLUCIONES TECNOLÓGICAS ESCALABLES /
           </div>
         </div>
-      </div>
-    </div>
 
-    {/* Glow effect */}
-    <div className="absolute -inset-4 bg-gradient-to-t from-purple-500/20 to-transparent blur-xl -z-10" />
-  </motion.div>
-);
+        {/* Desktop IDE Split Pane */}
+        <div className="hidden md:flex flex-row border border-nd-border bg-nd-black min-h-[500px]">
+          
+          {/* Sidebar (30%) */}
+          <div className="w-[30%] border-r border-nd-border bg-nd-surface flex flex-col pt-8">
+            <div className="px-8 mb-8 flex items-center gap-3 opacity-60">
+              <Code2 className="w-4 h-4 text-nd-textSecondary" />
+              <span className="label-font text-[10px] text-nd-textSecondary">EXPLORER</span>
+            </div>
+            
+            <div className="flex flex-col">
+              {services.map((service, idx) => {
+                const isActive = activeDesktopIndex === idx;
+                return (
+                  <button 
+                    key={idx}
+                    onClick={() => setActiveDesktopIndex(idx)}
+                    className={`w-full text-left px-8 py-5 flex items-center gap-4 transition-all duration-200 border-l-2
+                      ${isActive 
+                        ? 'border-nd-accent bg-nd-surfaceRaised/50 text-nd-textDisplay shadow-[inset_2px_0_10px_rgba(255,0,0,0.05)]' 
+                        : 'border-transparent text-nd-textSecondary hover:bg-nd-surfaceRaised/30 hover:text-nd-textPrimary'
+                      }`}
+                  >
+                    <service.icon className={`w-4 h-4 flex-shrink-0 transition-colors ${isActive ? 'text-nd-accent' : ''}`} strokeWidth={1.5} />
+                    <span className="label-font text-[11px] tracking-wider">{service.label}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
 
-// ========== ICON WITH HOVER EFFECT ==========
-interface HoverIconProps {
-  icon: React.ComponentType<{ className?: string }>;
-  color: 'cyan' | 'purple' | 'emerald';
-}
-
-const HoverIcon = ({ icon: Icon, color }: HoverIconProps) => {
-  const colors = {
-    cyan: 'group-hover:text-cyan-400 group-hover:drop-shadow-[0_0_12px_rgba(0,242,255,0.8)]',
-    purple: 'group-hover:text-purple-400 group-hover:drop-shadow-[0_0_12px_rgba(189,0,255,0.8)]',
-    emerald: 'group-hover:text-emerald-400 group-hover:drop-shadow-[0_0_12px_rgba(52,211,153,0.8)]',
-  };
-
-  const bgColors = {
-    cyan: 'bg-cyan-500/10 border-cyan-500/20 group-hover:border-cyan-500/50',
-    purple: 'bg-purple-500/10 border-purple-500/20 group-hover:border-purple-500/50',
-    emerald: 'bg-emerald-500/10 border-emerald-500/20 group-hover:border-emerald-500/50',
-  };
-
-  return (
-    <motion.div
-      className={`w-14 h-14 rounded-2xl ${bgColors[color]} border flex items-center justify-center transition-all duration-300`}
-      whileHover={{ scale: 1.1 }}
-    >
-      <Icon className={`w-7 h-7 text-slate-400 transition-all duration-300 ${colors[color]}`} />
-    </motion.div>
-  );
-};
-
-// ========== MAIN SERVICES SECTION ==========
-const ServicesSection = () => {
-  return (
-    <section id="servicios" className="py-24 relative overflow-hidden" style={{ backgroundColor: '#0a0a1f' }}>
-      {/* Background effects */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute w-[600px] h-[600px] top-0 -left-64 bg-gradient-radial from-cyan-500/10 via-transparent to-transparent blur-3xl" />
-        <div className="absolute w-[600px] h-[600px] bottom-0 -right-64 bg-gradient-radial from-purple-500/10 via-transparent to-transparent blur-3xl" />
-      </div>
-
-      <div className="container mx-auto px-4 md:px-6 lg:px-12 relative z-10">
-        {/* Header */}
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-            Nuestros <span className="gradient-text">Servicios</span>
-          </h2>
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-            Soluciones tecnológicas de vanguardia para escalar tu negocio al futuro
-          </p>
-        </motion.div>
-
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-
-          {/* Main Card: Desarrollo Web (2x2) */}
-          <motion.div
-            className="col-span-1 md:col-span-2 md:row-span-2"
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <SpotlightCard className="h-full group p-8">
-              <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-                <Code2 className="w-64 h-64 text-cyan-400" />
-              </div>
-
-              <div className="h-full flex flex-col justify-between relative z-10">
-                <div>
-                  <HoverIcon icon={Globe} color="cyan" />
-                  <h3 className="text-3xl font-bold mb-4 mt-6 text-white">
-                    Desarrollo Web Fullstack
-                  </h3>
-                  <p className="text-lg text-slate-400 mb-8 max-w-md">
-                    Creamos aplicaciones web modernas, rápidas y escalables con las últimas tecnologías.
-                  </p>
-                  <TerminalCode />
+          {/* Main Panel (70%) */}
+          <div className="w-[70%] p-12 lg:p-16 bg-nd-black flex flex-col relative overflow-hidden justify-center group">
+            {/* The active content */ }
+            <div key={activeDesktopIndex} className="animate-[fadeIn_0.3s_ease-out] z-10 w-full max-w-2xl">
+                <div className="mb-6 flex items-center gap-4">
+                  <span className="label-font text-[10px] text-nd-accent px-3 py-1 border border-nd-accent/30 bg-nd-accent/5">
+                     {activeDesktopService.label}
+                  </span>
+                  <div className="h-px bg-nd-border-visible flex-grow opacity-50" />
                 </div>
-              </div>
-            </SpotlightCard>
-          </motion.div>
-
-          {/* Apps Móviles (1x2) */}
-          <motion.div
-            className="col-span-1 md:row-span-2"
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <SpotlightCard className="h-full group p-8">
-              <div className="h-full flex flex-col relative z-10">
-                <HoverIcon icon={Smartphone} color="purple" />
-                <h3 className="text-2xl font-bold mb-4 mt-6 text-white">
-                  Apps Móviles
+                
+                <h3 className="display-font text-5xl lg:text-6xl text-nd-textDisplay mb-8 tracking-tight">
+                  {activeDesktopService.title}
                 </h3>
-                <p className="text-slate-400 mb-8">
-                  Desarrollo nativo y multiplataforma para iOS y Android.
+                
+                <p className="text-nd-textPrimary text-lg leading-relaxed mb-12 opacity-90">
+                  {activeDesktopService.desc}
                 </p>
-                <div className="mt-auto flex justify-center">
-                  <FloatingPhone />
+                
+                <div className="border border-nd-border bg-nd-surface/40 p-6 relative">
+                  <div className="absolute -top-3 left-4 bg-nd-black px-2 label-font text-[10px] text-nd-textSecondary flex items-center gap-2">
+                    <Database className="w-3 h-3 text-nd-accent/50" /> CONFIG.yml
+                  </div>
+                  <div className="font-mono text-sm tracking-wide flex flex-col gap-4 mt-2">
+                    {activeDesktopService.stats.map((stat, i) => (
+                      <div key={i} className="flex flex-row items-center">
+                         <span className="text-nd-accent/80 w-32 shrink-0">{stat.label.toLowerCase()}:</span>
+                         <span className="text-nd-textDisplay">"{stat.value}"</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </SpotlightCard>
-          </motion.div>
+            </div>
+            
+            {/* Subtle background decoration */}
+            <activeDesktopService.icon className="absolute -right-16 -bottom-16 w-80 h-80 text-nd-surfaceRaised/30 pointer-events-none group-hover:scale-105 transition-transform duration-1000" strokeWidth={0.5} />
+          </div>
+        </div>
 
-          {/* Sistemas CRM (1x1) */}
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <SpotlightCard className="h-full group p-8">
-              <HoverIcon icon={BarChart3} color="cyan" />
-              <h3 className="text-xl font-bold mb-2 mt-6 text-white">
-                Sistemas CRM
-              </h3>
-              <p className="text-sm text-slate-400">
-                Automatiza tu negocio con software de gestión personalizado.
-              </p>
-            </SpotlightCard>
-          </motion.div>
-
-          {/* E-commerce (2x1) */}
-          <motion.div
-            className="col-span-1 md:col-span-2"
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <SpotlightCard className="h-full group p-8">
-              <div className="flex flex-col md:flex-row items-center gap-8">
-                <div className="flex-1">
-                  <HoverIcon icon={ShoppingCart} color="emerald" />
-                  <h3 className="text-xl font-bold mb-2 mt-6 text-white">
-                    E-commerce
-                  </h3>
-                  <p className="text-sm text-slate-400">
-                    Tiendas online optimizadas con pasarelas de pago, inventario y más.
-                  </p>
-                </div>
-
-                {/* Mini stats decoration */}
-                <div className="hidden md:flex gap-4">
-                  {[
-                    { value: '99.9%', label: 'Uptime' },
-                    { value: '2.5s', label: 'Load' },
-                    { value: '10K+', label: 'Users' },
-                  ].map((stat) => (
-                    <div key={stat.label} className="text-center">
-                      <div className="text-xl font-bold text-cyan-400">{stat.value}</div>
-                      <div className="text-xs text-slate-500">{stat.label}</div>
+        {/* Mobile Accordion */}
+        <div className="flex flex-col md:hidden border-t border-nd-border">
+          {services.map((service, idx) => {
+            const isOpen = openAccordion === idx;
+            return (
+              <div key={idx} className="border-b border-nd-border/60">
+                <button 
+                  onClick={() => setOpenAccordion(isOpen ? null : idx)}
+                  className="w-full py-6 pr-2 flex items-center justify-between text-left focus:outline-none bg-transparent"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 flex flex-shrink-0 items-center justify-center border border-nd-border/60 text-nd-textPrimary bg-nd-surfaceRaised/30">
+                      <service.icon className="w-5 h-5" strokeWidth={1.5} />
                     </div>
-                  ))}
+                    <span className="text-lg font-medium text-nd-textDisplay tracking-wide leading-tight px-2">
+                       {service.title}
+                    </span>
+                  </div>
+                  <div className={`text-2xl font-mono transition-colors duration-300 ml-4 ${isOpen ? 'text-nd-accent' : 'text-nd-textSecondary'}`}>
+                    {isOpen ? '-' : '+'}
+                  </div>
+                </button>
+
+                <div 
+                  className={`overflow-hidden transition-[max-height] duration-500 ease-in-out ${isOpen ? 'max-h-[600px]' : 'max-h-0'}`}
+                >
+                  <div className="pb-8 pt-2">
+                    <p className="text-sm text-nd-textPrimary mb-6 leading-relaxed">
+                      {service.desc}
+                    </p>
+                    <div className="flex flex-col gap-2 border-t border-nd-border/40 pt-6">
+                      {service.stats.map((stat, i) => (
+                        <div key={i} className="flex justify-between items-center bg-nd-black/40 border border-nd-border/50 px-4 py-3">
+                          <span className="label-font text-[10px] text-nd-textSecondary">{stat.label}</span>
+                          <span className="label-font text-xs text-nd-textDisplay">{stat.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </SpotlightCard>
-          </motion.div>
-
+            );
+          })}
         </div>
       </div>
     </section>
