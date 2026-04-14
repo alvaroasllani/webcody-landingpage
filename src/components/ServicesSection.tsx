@@ -2,8 +2,7 @@ import { Globe, ShoppingCart, BarChart3, Smartphone, Code2, Database } from 'luc
 import { useState } from 'react';
 
 const ServicesSection = () => {
-  const [openAccordion, setOpenAccordion] = useState<number | null>(null);
-  const [activeDesktopIndex, setActiveDesktopIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const services = [
     {
@@ -58,78 +57,93 @@ const ServicesSection = () => {
     }
   ];
 
-  const activeDesktopService = services[activeDesktopIndex];
+  const activeService = services[activeIndex];
 
   return (
     <section id="servicios" className="py-24 bg-transparent text-nd-textPrimary border-t border-nd-border">
       <div className="container mx-auto px-4 md:px-6 lg:px-12">
         <div className="mb-16">
-          <h2 className="display-font text-5xl md:text-6xl text-nd-textDisplay uppercase tracking-tight">
-            NUESTROS<br />SE<span className="text-nd-accent">R</span>VICIOS
+          <h2 className="display-font text-4xl md:text-5xl lg:text-7xl text-nd-textDisplay tracking-tight uppercase mb-4">
+            NUESTROS<br className="hidden md:block"/>SE<span className="text-nd-accent">R</span>VICIOS
           </h2>
-          <div className="mt-8 label-font text-nd-textSecondary text-xs">
+          <div className="mt-4 label-font text-[10px] md:text-xs text-nd-textSecondary">
             / SOLUCIONES TECNOLÓGICAS ESCALABLES /
           </div>
         </div>
 
-        {/* Desktop IDE Split Pane */}
-        <div className="hidden md:flex flex-row border border-nd-border bg-nd-black min-h-[500px]">
+        {/* IDE Split Pane (Responsive) */}
+        <div className="flex flex-col md:flex-row border border-nd-border bg-nd-black min-h-[500px]">
           
-          {/* Sidebar (30%) */}
-          <div className="w-[30%] border-r border-nd-border bg-nd-surface flex flex-col pt-8">
-            <div className="px-8 mb-8 flex items-center gap-3 opacity-60">
+          {/* Sidebar Tabs */}
+          <div className="w-full md:w-[30%] border-b md:border-b-0 md:border-r border-nd-border bg-nd-surface flex flex-col md:pt-8 relative">
+            {/* Desktop Explorer Label */}
+            <div className="hidden md:flex px-8 mb-8 items-center gap-3 opacity-60">
               <Code2 className="w-4 h-4 text-nd-textSecondary" />
               <span className="label-font text-[10px] text-nd-textSecondary">EXPLORER</span>
             </div>
             
-            <div className="flex flex-col">
+            {/* Mobile Scroll Indicator Label */}
+            <div className="flex md:hidden px-6 pt-4 pb-2 items-center justify-between opacity-60">
+                <div className="flex items-center gap-2">
+                    <Code2 className="w-3 h-3 text-nd-textSecondary" />
+                    <span className="label-font text-[10px] text-nd-textSecondary">EXPLORER</span>
+                </div>
+                <span className="label-font text-[10px] text-nd-textDisplay underline animate-pulse">
+                    [ DESLIZAR &rarr; ]
+                </span>
+            </div>
+            
+            <div className="flex flex-row md:flex-col overflow-x-auto scrollbar-none" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {services.map((service, idx) => {
-                const isActive = activeDesktopIndex === idx;
+                const isActive = activeIndex === idx;
                 return (
                   <button 
                     key={idx}
-                    onClick={() => setActiveDesktopIndex(idx)}
-                    className={`w-full text-left px-8 py-5 flex items-center gap-4 transition-all duration-200 border-l-2
+                    onClick={() => setActiveIndex(idx)}
+                    className={`flex-shrink-0 md:w-full text-left px-6 py-4 md:px-8 md:py-5 flex flex-col md:flex-row items-center md:items-start gap-2 md:gap-4 transition-all duration-200 border-b-2 md:border-b-0 md:border-l-2
                       ${isActive 
-                        ? 'border-nd-accent bg-nd-surfaceRaised/50 text-nd-textDisplay shadow-[inset_2px_0_10px_rgba(255,0,0,0.05)]' 
+                        ? 'border-nd-accent bg-nd-surfaceRaised/50 text-nd-textDisplay md:shadow-[inset_2px_0_10px_rgba(255,0,0,0.05)] shadow-[inset_0_2px_10px_rgba(255,0,0,0.05)] md:shadow-none' 
                         : 'border-transparent text-nd-textSecondary hover:bg-nd-surfaceRaised/30 hover:text-nd-textPrimary'
                       }`}
                   >
-                    <service.icon className={`w-4 h-4 flex-shrink-0 transition-colors ${isActive ? 'text-nd-accent' : ''}`} strokeWidth={1.5} />
-                    <span className="label-font text-[11px] tracking-wider">{service.label}</span>
+                    <service.icon className={`w-5 h-5 md:w-4 md:h-4 flex-shrink-0 transition-colors ${isActive ? 'text-nd-accent' : ''}`} strokeWidth={1.5} />
+                    <div className="flex flex-col text-center md:text-left">
+                       <span className="label-font text-[9px] md:text-[11px] tracking-wider whitespace-nowrap">{service.label}</span>
+                       <span className="md:hidden text-xs mt-1 font-medium">{service.title}</span>
+                    </div>
                   </button>
                 )
               })}
             </div>
           </div>
 
-          {/* Main Panel (70%) */}
-          <div className="w-[70%] p-12 lg:p-16 bg-nd-black flex flex-col relative overflow-hidden justify-center group">
+          {/* Main Panel */}
+          <div className="w-full md:w-[70%] p-6 md:p-12 lg:p-16 bg-nd-black flex flex-col relative overflow-hidden justify-center group min-h-[400px]">
             {/* The active content */ }
-            <div key={activeDesktopIndex} className="animate-[fadeIn_0.3s_ease-out] z-10 w-full max-w-2xl">
+            <div key={activeIndex} className="animate-[fadeIn_0.3s_ease-out] z-10 w-full max-w-2xl">
                 <div className="mb-6 flex items-center gap-4">
-                  <span className="label-font text-[10px] text-nd-accent px-3 py-1 border border-nd-accent/30 bg-nd-accent/5">
-                     {activeDesktopService.label}
+                  <span className="label-font text-[9px] md:text-[10px] text-nd-accent px-3 py-1 border border-nd-accent/30 bg-nd-accent/5 hidden md:inline-block">
+                     {activeService.label}
                   </span>
-                  <div className="h-px bg-nd-border-visible flex-grow opacity-50" />
+                  <div className="h-px bg-nd-border-visible flex-grow opacity-50 hidden md:block" />
                 </div>
                 
-                <h3 className="display-font text-5xl lg:text-6xl text-nd-textDisplay mb-8 tracking-tight">
-                  {activeDesktopService.title}
+                <h3 className="display-font text-3xl md:text-5xl lg:text-6xl text-nd-textDisplay mb-6 md:mb-8 tracking-tight">
+                  {activeService.title}
                 </h3>
                 
-                <p className="text-nd-textPrimary text-lg leading-relaxed mb-12 opacity-90">
-                  {activeDesktopService.desc}
+                <p className="text-nd-textPrimary text-base md:text-lg leading-relaxed mb-10 md:mb-12 opacity-90">
+                  {activeService.desc}
                 </p>
                 
-                <div className="border border-nd-border bg-nd-surface/40 p-6 relative">
-                  <div className="absolute -top-3 left-4 bg-nd-black px-2 label-font text-[10px] text-nd-textSecondary flex items-center gap-2">
+                <div className="border border-nd-border bg-nd-surface/40 p-5 md:p-6 relative">
+                  <div className="absolute -top-3 left-4 bg-nd-black px-2 label-font text-[9px] md:text-[10px] text-nd-textSecondary flex items-center gap-2">
                     <Database className="w-3 h-3 text-nd-accent/50" /> CONFIG.yml
                   </div>
-                  <div className="font-mono text-sm tracking-wide flex flex-col gap-4 mt-2">
-                    {activeDesktopService.stats.map((stat, i) => (
-                      <div key={i} className="flex flex-row items-center">
-                         <span className="text-nd-accent/80 w-32 shrink-0">{stat.label.toLowerCase()}:</span>
+                  <div className="font-mono text-xs md:text-sm tracking-wide flex flex-col gap-3 md:gap-4 mt-2">
+                    {activeService.stats.map((stat, i) => (
+                      <div key={i} className="flex flex-col sm:flex-row sm:items-center">
+                         <span className="text-nd-accent/80 w-auto sm:w-32 shrink-0 mb-1 sm:mb-0 text-[10px] md:text-xs">[{stat.label}]:</span>
                          <span className="text-nd-textDisplay">"{stat.value}"</span>
                       </div>
                     ))}
@@ -138,55 +152,15 @@ const ServicesSection = () => {
             </div>
             
             {/* Subtle background decoration */}
-            <activeDesktopService.icon className="absolute -right-16 -bottom-16 w-80 h-80 text-nd-surfaceRaised/30 pointer-events-none group-hover:scale-105 transition-transform duration-1000" strokeWidth={0.5} />
+            <activeService.icon className="absolute -right-10 -bottom-10 md:-right-16 md:-bottom-16 w-48 h-48 md:w-80 md:h-80 text-nd-surfaceRaised/30 pointer-events-none group-hover:scale-105 transition-transform duration-1000" strokeWidth={0.5} />
           </div>
         </div>
-
-        {/* Mobile Accordion */}
-        <div className="flex flex-col md:hidden border-t border-nd-border">
-          {services.map((service, idx) => {
-            const isOpen = openAccordion === idx;
-            return (
-              <div key={idx} className="border-b border-nd-border/60">
-                <button 
-                  onClick={() => setOpenAccordion(isOpen ? null : idx)}
-                  className="w-full py-6 pr-2 flex items-center justify-between text-left focus:outline-none bg-transparent"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 flex flex-shrink-0 items-center justify-center border border-nd-border/60 text-nd-textPrimary bg-nd-surfaceRaised/30">
-                      <service.icon className="w-5 h-5" strokeWidth={1.5} />
-                    </div>
-                    <span className="text-lg font-medium text-nd-textDisplay tracking-wide leading-tight px-2">
-                       {service.title}
-                    </span>
-                  </div>
-                  <div className={`text-2xl font-mono transition-colors duration-300 ml-4 ${isOpen ? 'text-nd-accent' : 'text-nd-textSecondary'}`}>
-                    {isOpen ? '-' : '+'}
-                  </div>
-                </button>
-
-                <div 
-                  className={`overflow-hidden transition-[max-height] duration-500 ease-in-out ${isOpen ? 'max-h-[600px]' : 'max-h-0'}`}
-                >
-                  <div className="pb-8 pt-2">
-                    <p className="text-sm text-nd-textPrimary mb-6 leading-relaxed">
-                      {service.desc}
-                    </p>
-                    <div className="flex flex-col gap-2 border-t border-nd-border/40 pt-6">
-                      {service.stats.map((stat, i) => (
-                        <div key={i} className="flex justify-between items-center bg-nd-black/40 border border-nd-border/50 px-4 py-3">
-                          <span className="label-font text-[10px] text-nd-textSecondary">{stat.label}</span>
-                          <span className="label-font text-xs text-nd-textDisplay">{stat.value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
       </div>
+      <style>{`
+          .scrollbar-none::-webkit-scrollbar {
+              display: none;
+          }
+      `}</style>
     </section>
   );
 };
