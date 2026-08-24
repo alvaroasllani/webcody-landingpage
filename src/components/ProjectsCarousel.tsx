@@ -1,362 +1,100 @@
-import { useState, useEffect } from 'react';
-import { ExternalLink, X, ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Expand, X } from "lucide-react";
 
-interface Project {
-    id: number;
-    title: string;
-    description: string;
-    category: string;
-    image: string;
-    images: string[];
-    url: string;
-    stats: { label: string; value: string }[];
-}
+interface Project { title: string; category: string; year: string; description: string; image: string; images: string[]; url: string; stack: string; }
 
 const projects: Project[] = [
-    {
-        id: 1,
-        title: "APP INMOBILIARIA",
-        description: "Aplicación móvil diseñada para inmobiliarias que permite gestionar captaciones, propiedades y clientes de forma eficiente. Interfaz intuitiva y optimizada para el trabajo en campo.",
-        category: "MOBILE APP",
-        image: "/img/inmobiliaria/1.png",
-        images: ["/img/inmobiliaria/1.png", "/img/inmobiliaria/2.png", "/img/inmobiliaria/3.png"],
-        url: "https://residencia-consultor-ls6s.glide.page",
-        stats: [
-            { label: "STACK", value: "GLIDEAPPS" },
-            { label: "DB", value: "INTEGRADA" },
-            { label: "PLATAFORMAS", value: "WEB / MOBILE" }
-        ]
-    },
-    {
-        id: 2,
-        title: "ECOMMERCE SAYQA",
-        description: "Tienda online de medicina natural con catálogo completo de productos, carrito de compras inteligente y múltiples pasarelas de pago integradas para una experiencia de compra fluida.",
-        category: "E-COMMERCE",
-        image: "/img/ecommerce/1.png",
-        images: ["/img/ecommerce/1.png", "/img/ecommerce/2.png", "/img/ecommerce/3.png"],
-        url: "https://sayqamedicinanatural.com/",
-        stats: [
-            { label: "STACK", value: "NEXT.JS / NEST.JS" },
-            { label: "DB", value: "MYSQL" },
-            { label: "TIPO", value: "TIENDA ONLINE" }
-        ]
-    },
-    {
-        id: 3,
-        title: "SISTEMA ERP",
-        description: "Sistema integral de punto de venta con gestión de inventario en tiempo real, módulo de ventas, reportes analíticos avanzados y control financiero completo.",
-        category: "ERP / POS",
-        image: "/img/erp/1.png",
-        images: ["/img/erp/1.png", "/img/erp/2.png", "/img/erp/3.png"],
-        url: "https://erp-sistemadeventa-web.vercel.app/",
-        stats: [
-            { label: "STACK", value: "NEXT.JS / NEST.JS" },
-            { label: "DB", value: "POSTGRES" },
-            { label: "ANALÍTICA", value: "TIEMPO REAL" }
-        ]
-    },
-    {
-        id: 4,
-        title: "JUEGO ESCUDARÍA",
-        description: "Juego educativo interactivo para Android. Diseñado para ofrecer una experiencia lúdica y de aprendizaje inmersiva.",
-        category: "ANDROID GAME",
-        image: "/img/Escudaria/1.jpeg",
-        images: [
-            "/img/Escudaria/1.jpeg",
-            "/img/Escudaria/2.jpeg",
-            "/img/Escudaria/3.jpeg",
-            "/img/Escudaria/4.jpeg"
-        ],
-        url: "https://play.google.com/store/apps/details?id=com.webcody.escudaria&pcampaignid=web_share",
-        stats: [
-            { label: "STACK", value: "UNITY / C#" },
-            { label: "PLATFORM", value: "ANDROID" },
-            { label: "TIPO", value: "JUEGO EDUCATIVO" }
-        ]
-    },
-    {
-        id: 5,
-        title: "BECERRA & ASOCIADOS",
-        description: "Landing page corporativa para constructora. Diseño moderno y profesional enfocado en la presentación de servicios y proyectos de arquitectura.",
-        category: "LANDING PAGE",
-        image: "/img/Becerra/1.png",
-        images: [
-            "/img/Becerra/1.png",
-            "/img/Becerra/2.png",
-            "/img/Becerra/3.png",
-            "/img/Becerra/4.png",
-            "/img/Becerra/5.png",
-            "/img/Becerra/6.png"
-        ],
-        url: "https://becerraconstrucciones.com/",
-        stats: [
-            { label: "STACK", value: "HTML / CSS / JS" },
-            { label: "DB", value: "N/A" },
-            { label: "RUBRO", value: "CONSTRUCCIÓN" }
-        ]
-    },
-    {
-        id: 6,
-        title: "CONSTRUCTORA AMULEK",
-        description: "Sitio web institucional para empresa constructora, destacando portafolio de obras, servicios y contacto directo.",
-        category: "LANDING PAGE",
-        image: "/img/Amulek/1.png",
-        images: [
-            "/img/Amulek/1.png",
-            "/img/Amulek/2.png",
-            "/img/Amulek/3.png",
-            "/img/Amulek/4.png",
-            "/img/Amulek/5.png",
-            "/img/Amulek/6.png",
-            "/img/Amulek/7.png",
-            "/img/Amulek/8.png"
-        ],
-        url: "https://amulekconstrucciones.com/",
-        stats: [
-            { label: "STACK", value: "HTML / CSS / JS" },
-            { label: "DB", value: "N/A" },
-            { label: "RUBRO", value: "CONSTRUCCIÓN" }
-        ]
-    }
+  { title: "Sayqa", category: "E-commerce", year: "2025", description: "Una experiencia de compra para medicina natural: catálogo, carrito y pagos conectados en un recorrido simple y confiable.", image: "/img/ecommerce/1.png", images: ["/img/ecommerce/1.png", "/img/ecommerce/2.png", "/img/ecommerce/3.png", "/img/ecommerce/10.png"], url: "https://sayqamedicinanatural.com/", stack: "Next.js · Nest.js · MySQL" },
+  { title: "Sistema ERP", category: "Producto SaaS", year: "2025", description: "Inventario, ventas, finanzas y analítica en tiempo real reunidos en un sistema operativo claro para el negocio.", image: "/img/erp/1.png", images: ["/img/erp/1.png", "/img/erp/2.png", "/img/erp/3.png", "/img/erp/6.png"], url: "https://erp-sistemadeventa-web.vercel.app/", stack: "Next.js · Nest.js · PostgreSQL" },
+  { title: "Residencia", category: "Aplicación móvil", year: "2025", description: "Una herramienta de campo para inmobiliarias que organiza propiedades, captaciones y clientes sin fricción.", image: "/img/inmobiliaria/1.png", images: ["/img/inmobiliaria/1.png", "/img/inmobiliaria/2.png", "/img/inmobiliaria/3.png"], url: "https://residencia-consultor-ls6s.glide.page", stack: "Glide Apps · Mobile" },
+  { title: "Escudaría", category: "Juego Android", year: "2024", description: "Aprendizaje y juego se encuentran en una experiencia interactiva creada para mantener la curiosidad en movimiento.", image: "/img/Escudaria/1.jpeg", images: ["/img/Escudaria/1.jpeg", "/img/Escudaria/2.jpeg", "/img/Escudaria/3.jpeg", "/img/Escudaria/4.jpeg"], url: "https://play.google.com/store/apps/details?id=com.webcody.escudaria&pcampaignid=web_share", stack: "Unity · C# · Android" },
+  { title: "Becerra", category: "Web corporativa", year: "2024", description: "Una presencia digital sobria y visual para una constructora que necesitaba transmitir precisión antes del primer contacto.", image: "/img/Becerra/1.png", images: ["/img/Becerra/1.png", "/img/Becerra/2.png", "/img/Becerra/4.png", "/img/Becerra/6.png"], url: "https://becerraconstrucciones.com/", stack: "HTML · CSS · JavaScript" },
+  { title: "Amulek", category: "Web corporativa", year: "2024", description: "Arquitectura, obra y servicios presentados mediante una experiencia institucional directa, cálida y fácil de recorrer.", image: "/img/Amulek/1.png", images: ["/img/Amulek/1.png", "/img/Amulek/2.png", "/img/Amulek/4.png", "/img/Amulek/8.png"], url: "https://amulekconstrucciones.com/", stack: "HTML · CSS · JavaScript" },
 ];
 
-const ProjectsGrid = () => {
-    // Modal state
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [activeProject, setActiveProject] = useState<Project | null>(null);
-    const [modalImageIndex, setModalImageIndex] = useState(0);
-    const [modalTouchStart, setModalTouchStart] = useState<number | null>(null);
+interface ProjectCardProps { project: Project; index: number; onOpen: () => void; }
 
-    // Keyboard & body lock side effect
-    useEffect(() => {
-        if (!isModalOpen) return;
+const ProjectCard = ({ project, index, onOpen }: ProjectCardProps) => {
+  const featured = index === 0;
+  const medium = index === 1 || index === 2;
+  const span = featured ? "lg:col-span-12" : medium ? "lg:col-span-6" : "lg:col-span-4";
 
-        document.body.style.overflow = 'hidden';
-
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') closeModal();
-            if (e.key === 'ArrowRight' && activeProject) {
-                setModalImageIndex((prev) => (prev + 1) % activeProject.images.length);
-            }
-            if (e.key === 'ArrowLeft' && activeProject) {
-                setModalImageIndex((prev) => (prev - 1 + activeProject.images.length) % activeProject.images.length);
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-
-        return () => {
-            document.body.style.overflow = 'auto';
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [isModalOpen, activeProject]);
-
-    // Modal Handlers
-    const openModal = (project: Project) => {
-        if (project.images.length === 0) return; // Prevent modal if no images
-        setActiveProject(project);
-        setModalImageIndex(0);
-        setIsModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setActiveProject(null);
-    };
-
-    const nextModalImage = (e?: React.MouseEvent) => {
-        e?.stopPropagation();
-        if (activeProject) {
-            setModalImageIndex((prev) => (prev + 1) % activeProject.images.length);
-        }
-    };
-
-    const prevModalImage = (e?: React.MouseEvent) => {
-        e?.stopPropagation();
-        if (activeProject) {
-            setModalImageIndex((prev) => (prev - 1 + activeProject.images.length) % activeProject.images.length);
-        }
-    };
-
-    const handleModalTouchStart = (e: React.TouchEvent) => setModalTouchStart(e.targetTouches[0].clientX);
-    const handleModalTouchEnd = (e: React.TouchEvent) => {
-        if (!modalTouchStart) return;
-        const touchEnd = e.changedTouches[0].clientX;
-        const distance = modalTouchStart - touchEnd;
-
-        if (distance > 50) nextModalImage();
-        if (distance < -50) prevModalImage();
-        setModalTouchStart(null);
-    };
-
+  if (featured) {
     return (
-        <section id="proyectos" className="py-24 bg-transparent border-t border-nd-border">
-            <div className="container mx-auto px-4 md:px-6 lg:px-12">
-
-                {/* Header Area */}
-                <div className="mb-16">
-                    <h2 className="display-font text-4xl md:text-5xl lg:text-7xl text-nd-textDisplay tracking-tight uppercase mb-4">
-                        SISTEMAS CONSTRUIDOS
-                    </h2>
-                    <div className="flex flex-wrap gap-4 label-font text-[10px] md:text-xs text-nd-textSecondary">
-                        <span>[ PROYECTOS DESARROLLADOS: {String(projects.length).padStart(3, '0')} ]</span>
-                        <span>[ ESTADO: COMPLETADOS ]</span>
-                    </div>
-                </div>
-
-                {/* Grid Area */}
-                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6">
-                    {projects.map((project) => (
-                        <div
-                            key={project.id}
-                            className="flex flex-col nothing-card p-3 sm:p-4 md:p-6 border-nd-border relative group"
-                        >
-                            {/* Image Box */}
-                            <div
-                                className={`relative bg-nd-black border border-nd-border-visible rounded h-[120px] sm:h-[160px] md:h-[200px] flex items-center justify-center p-2 md:p-4 mb-8 md:mb-8 ${project.images.length > 0 ? 'cursor-pointer' : 'cursor-default'}`}
-                                onClick={() => openModal(project)}
-                            >
-                                <div className="absolute inset-0 dot-grid-subtle opacity-20 pointer-events-none" />
-
-                                <img
-                                    src={project.image}
-                                    alt={project.title}
-                                    loading="lazy"
-                                    decoding="async"
-                                    className="max-h-full max-w-full object-contain relative z-10 scale-95 group-hover:scale-100 transition-transform duration-500 ease-out"
-                                    onError={(e) => {
-                                        e.currentTarget.style.display = 'none';
-                                        e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                                    }}
-                                />
-                                <div className="hidden absolute inset-0 flex items-center justify-center label-font text-[8px] md:text-xs text-nd-textDisabled border-2 border-dashed border-nd-border-visible m-2 md:m-4 pointer-events-none">
-                                    [ ASSET_PENDING ]
-                                </div>
-
-                                {/* Hover Indicator for Gallery */}
-                                {project.images.length > 0 && (
-                                    <div className="absolute top-1 right-1 md:top-2 md:right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-nd-black/80 backdrop-blur-sm border border-nd-border px-1.5 py-1 md:px-2 md:py-1 rounded label-font text-[8px] md:text-[9px] text-nd-textDisplay flex items-center gap-1 z-30 pointer-events-none">
-                                        <ZoomIn className="w-2 h-2 md:w-3 md:h-3" />
-                                        <span>GALERÍA ({project.images.length})</span>
-                                    </div>
-                                )}
-
-                                {/* Stats Box */}
-                                <div className="absolute -right-1 -bottom-4 md:-right-2 md:-bottom-4 lg:-right-4 lg:-bottom-4 bg-nd-surface border border-nd-border px-1.5 md:px-3 py-1 md:py-2 shadow-xl z-20 w-[95px] md:w-[140px] rounded shadow-black/80 pointer-events-none">
-                                    {project.stats.map((s) => (
-                                        <div key={s.label} className="border-b border-nd-border pb-[2px] mb-[2px] md:pb-1 md:mb-1 last:border-0 last:pb-0 last:mb-0">
-                                            <div className="label-font text-[6px] md:text-[8px] text-nd-textSecondary leading-none">{s.label}:</div>
-                                            <div className="label-font text-[7px] md:text-[10px] text-nd-textPrimary truncate mt-[2px] leading-tight" title={s.value}>{s.value}</div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Content */}
-                            <div className="flex-grow flex flex-col mt-4 md:mt-4">
-                                <h3 className="text-sm sm:text-base lg:text-xl font-medium text-nd-textDisplay mb-2 md:mb-3 truncate" title={project.title}>
-                                    {project.title}
-                                </h3>
-                                <p className="text-nd-textPrimary text-[11px] md:text-sm mb-4 md:mb-8 line-clamp-3 md:line-clamp-4 opacity-90 leading-tight md:leading-relaxed font-sans flex-grow">
-                                    {project.description}
-                                </p>
-
-                                <div className="mt-auto">
-                                    <button
-                                        className="label-font text-[9px] md:text-[11px] text-nd-textPrimary hover:text-nd-textDisplay hover:tracking-widest flex items-center gap-1 md:gap-2 transition-all duration-300 uppercase whitespace-nowrap"
-                                        onClick={() => project.url !== '#' ? window.open(project.url, '_blank') : null}
-                                    >
-                                        [ VER_PROYECTO ]
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            {/* FULLSCREEN MODAL */}
-            {isModalOpen && activeProject && (
-                <div
-                    className="fixed inset-0 z-[100] bg-nd-black/95 backdrop-blur-md flex flex-col items-center justify-center p-4 lg:p-10 cursor-pointer select-none"
-                    onClick={closeModal}
-                >
-                    <div
-                        className="absolute top-0 left-0 right-0 p-4 lg:p-6 flex justify-between items-center border-b border-nd-border/50 bg-nd-black/70 backdrop-blur-md z-50 cursor-default"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <span className="label-font text-xs lg:text-sm text-nd-textDisplay tracking-widest hidden sm:block">
-                            [ {activeProject.title.toUpperCase()} ]
-                        </span>
-
-                        <div className="flex items-center gap-4 lg:gap-6">
-                            <span className="label-font text-[10px] md:text-xs text-nd-textSecondary bg-nd-surface border border-nd-border px-2.5 py-1 rounded">
-                                [ ARCHIVO {String(modalImageIndex + 1).padStart(2, '0')} / {String(activeProject.images.length).padStart(2, '0')} ]
-                            </span>
-                            <button
-                                onClick={closeModal}
-                                className="w-9 h-9 flex flex-shrink-0 items-center justify-center text-nd-textSecondary hover:text-nd-accent hover:border-nd-accent transition-colors border border-nd-border rounded cursor-pointer"
-                                title="Cerrar (Esc)"
-                            >
-                                <X className="w-5 h-5" strokeWidth={1.5} />
-                            </button>
-                        </div>
-                    </div>
-
-                    <div
-                        className="relative w-full max-w-6xl flex-grow flex flex-col items-center justify-center mt-20 sm:mt-16 sm:px-16 active:cursor-grabbing"
-                        onTouchStart={handleModalTouchStart}
-                        onTouchEnd={handleModalTouchEnd}
-                    >
-                        <img
-                            key={modalImageIndex}
-                            src={activeProject.images[modalImageIndex]}
-                            alt={`${activeProject.title} - captura ${modalImageIndex + 1}`}
-                            decoding="async"
-                            className="max-w-full max-h-[75vh] object-contain pointer-events-auto select-none border border-nd-border bg-nd-black shadow-2xl rounded cursor-default"
-                            onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                            onClick={(e) => e.stopPropagation()}
-                        />
-
-                        {activeProject.images.length > 1 && (
-                            <>
-                                <button
-                                    onClick={prevModalImage}
-                                    className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-nd-black/90 border border-nd-border text-nd-textSecondary hover:text-nd-accent hover:border-nd-accent transition-all z-50 pointer-events-auto rounded shadow-xl cursor-pointer"
-                                    title="Anterior (Flecha Izquierda)"
-                                >
-                                    <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={1.5} />
-                                </button>
-                                <button
-                                    onClick={nextModalImage}
-                                    className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-nd-black/90 border border-nd-border text-nd-textSecondary hover:text-nd-accent hover:border-nd-accent transition-all z-50 pointer-events-auto rounded shadow-xl cursor-pointer"
-                                    title="Siguiente (Flecha Derecha)"
-                                >
-                                    <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={1.5} />
-                                </button>
-
-                                {/* Nothing OS Pagination Dots */}
-                                <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-50 pointer-events-auto bg-nd-black/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-nd-border">
-                                    {activeProject.images.map((_, idx) => (
-                                        <button
-                                            key={idx}
-                                            onClick={(e) => { e.stopPropagation(); setModalImageIndex(idx); }}
-                                            className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                                                idx === modalImageIndex
-                                                    ? 'bg-nd-accent w-5'
-                                                    : 'bg-nd-textDisabled hover:bg-nd-textSecondary w-2'
-                                            }`}
-                                            title={`Ver captura ${idx + 1}`}
-                                        />
-                                    ))}
-                                </div>
-                            </>
-                        )}
-                    </div>
-                </div>
-            )}
-        </section>
+      <article className={`${span} glass-edge group relative grid overflow-hidden rounded-[30px] lg:min-h-[560px] lg:grid-cols-[.68fr_.32fr]`}>
+        <button onClick={onOpen} className="relative min-h-[300px] overflow-hidden bg-[#070913] text-left md:min-h-[360px]" aria-label={`Abrir galería de ${project.title}`}>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_55%_48%,rgba(140,245,255,.13),transparent_55%)]" />
+          <div className="absolute left-[8%] right-[8%] top-[10%] h-[78%] rotate-[-3deg] overflow-hidden rounded-[24px] border border-white/10 opacity-35 transition-transform duration-700 group-hover:-translate-x-5 group-hover:-rotate-[6deg]"><img src={project.images[1]} alt="" className="h-full w-full object-cover object-top" /></div>
+          <div className="absolute left-[5%] right-[4%] top-[12%] h-[76%] overflow-hidden rounded-[24px] border border-white/[.16] bg-[#0a0c14] p-2 shadow-[0_45px_110px_rgba(0,0,0,.6)] transition-transform duration-700 group-hover:-translate-y-3 group-hover:rotate-[1deg]">
+            <div className="flex h-7 items-center gap-1.5 px-3"><span className="h-1.5 w-1.5 rounded-full bg-white/20" /><span className="h-1.5 w-1.5 rounded-full bg-white/10" /><span className="h-1.5 w-1.5 rounded-full bg-nd-accent/60" /></div>
+            <img src={project.image} alt={`Vista principal de ${project.title}`} className="h-[calc(100%-1.75rem)] w-full rounded-[17px] object-cover object-top" />
+          </div>
+          <span className="absolute bottom-7 right-7 grid h-16 w-16 place-items-center rounded-full bg-nd-textDisplay text-nd-black shadow-2xl transition-transform duration-500 group-hover:scale-110"><Expand className="h-5 w-5" /></span>
+        </button>
+        <div className="relative flex flex-col justify-between border-t border-white/[.08] p-6 lg:border-l lg:border-t-0 lg:p-8">
+          <div className="flex justify-between gap-5 label-font text-[9px] text-nd-textSecondary"><span className="text-nd-accent">PROYECTO DESTACADO</span><span>{project.year}</span></div>
+          <div className="my-8 lg:my-0"><p className="text-[10px] font-medium uppercase tracking-[.18em] text-nd-textSecondary">{project.category}</p><h3 className="display-font mt-3 text-5xl font-medium leading-none tracking-[-.06em] text-nd-textDisplay lg:text-6xl">{project.title}</h3><p className="mt-5 text-sm leading-6 text-nd-textSecondary">{project.description}</p><p className="label-font mt-4 text-[8px] text-nd-textDisabled">{project.stack}</p></div>
+          <div className="flex flex-col gap-3"><a href={project.url} target="_blank" rel="noreferrer" className="frost-button">Abrir proyecto <ArrowUpRight className="h-4 w-4" /></a><button onClick={onOpen} className="ghost-button">Explorar capturas <Expand className="h-4 w-4" /></button></div>
+        </div>
+      </article>
     );
+  }
+
+  return (
+    <article className={`${span} glass-edge group overflow-hidden rounded-[30px] [content-visibility:auto]`}>
+      <button onClick={onOpen} className={`relative block h-[250px] w-full overflow-hidden bg-[#070913] text-left ${medium ? "md:h-[330px]" : "md:h-[270px]"}`} aria-label={`Abrir galería de ${project.title}`}>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(110,103,255,.11),transparent_65%)]" />
+        <div className="absolute left-[8%] right-[8%] top-[13%] h-[76%] rotate-[3deg] overflow-hidden rounded-[20px] border border-white/10 opacity-35 transition-transform duration-700 group-hover:translate-x-4 group-hover:rotate-[6deg]"><img src={project.images[1] ?? project.image} alt="" loading="lazy" decoding="async" className="h-full w-full object-cover object-top" /></div>
+        <div className="absolute left-[5%] right-[5%] top-[10%] h-[78%] overflow-hidden rounded-[21px] border border-white/[.14] bg-[#0a0c14] p-1.5 shadow-2xl transition-transform duration-700 group-hover:-translate-y-3 group-hover:-rotate-[1deg]"><img src={project.image} alt={`Vista de ${project.title}`} loading="lazy" decoding="async" className="h-full w-full rounded-[16px] object-cover object-top" /></div>
+        <span className="absolute bottom-5 right-5 grid h-12 w-12 place-items-center rounded-full bg-nd-textDisplay text-nd-black opacity-0 shadow-2xl transition-all duration-300 group-hover:opacity-100"><Expand className="h-4 w-4" /></span>
+      </button>
+      <div className="border-t border-white/[.08] p-5 md:p-6">
+        <div className="flex items-center justify-between gap-4 label-font text-[8px] text-nd-textSecondary"><span className="text-nd-accent">{project.category}</span><span>{project.year}</span></div>
+        <h3 className={`display-font mt-4 font-medium leading-none tracking-[-.055em] text-nd-textDisplay ${medium ? "text-4xl md:text-5xl" : "text-4xl"}`}>{project.title}</h3>
+        <p className="mt-4 line-clamp-2 text-sm leading-6 text-nd-textSecondary md:line-clamp-3">{project.description}</p>
+        <div className="mt-5 flex items-center justify-between gap-4 border-t border-white/[.07] pt-4"><span className="label-font text-[8px] text-nd-textDisabled">{project.stack}</span><a href={project.url} target="_blank" rel="noreferrer" aria-label={`Visitar ${project.title}`} className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/10 text-nd-textDisplay transition-colors hover:bg-nd-accent hover:text-nd-black"><ArrowUpRight className="h-4 w-4" /></a></div>
+      </div>
+    </article>
+  );
 };
 
-export default ProjectsGrid;
+const ProjectsCarousel = () => {
+  const [gallery, setGallery] = useState<number | null>(null);
+  const [shot, setShot] = useState(0);
+  const selected = gallery === null ? null : projects[gallery];
+
+  useEffect(() => {
+    if (!selected) return;
+    const onKey = (event: KeyboardEvent) => { if (event.key === "Escape") setGallery(null); if (event.key === "ArrowRight") setShot((value) => (value + 1) % selected.images.length); if (event.key === "ArrowLeft") setShot((value) => (value - 1 + selected.images.length) % selected.images.length); };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", onKey); };
+  }, [selected]);
+
+  const openGallery = (index: number) => { setGallery(index); setShot(0); };
+
+  return (
+    <section id="proyectos" className="relative overflow-hidden py-20 md:py-28">
+      <div className="absolute inset-x-0 top-[34rem] h-[48rem] bg-[radial-gradient(ellipse_at_center,rgba(108,105,255,.13),transparent_67%)]" />
+      <div className="page-shell relative">
+        <div className="mb-10 grid gap-5 md:grid-cols-[1fr_.65fr] md:items-end">
+          <div><p className="section-kicker mb-3">Proyectos realizados / {String(projects.length).padStart(2, "0")}</p><h2 className="display-font ice-text text-balance text-5xl font-medium leading-none tracking-[-.05em] md:text-7xl">Proyectos realizados.</h2></div>
+          <p className="max-w-md text-base leading-7 text-nd-textSecondary md:justify-self-end">No son conceptos ni mockups. Son aplicaciones, tiendas, sistemas y experiencias publicadas que puedes abrir, recorrer y probar.</p>
+        </div>
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">{projects.map((project, index) => <ProjectCard key={project.title} project={project} index={index} onOpen={() => openGallery(index)} />)}</div>
+      </div>
+
+      <AnimatePresence>
+        {selected ? <motion.div role="dialog" aria-modal="true" aria-label={`Galería de ${selected.title}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[100] grid place-items-center bg-[#03040a]/96 p-4 backdrop-blur-xl" onClick={() => setGallery(null)}>
+          <button onClick={() => setGallery(null)} className="absolute right-5 top-5 z-20 grid h-12 w-12 place-items-center rounded-full bg-white/10 text-white" aria-label="Cerrar galería"><X /></button>
+          <div className="absolute left-5 top-6 label-font text-[9px] text-nd-textSecondary">{selected.title} · {String(shot + 1).padStart(2, "0")} / {String(selected.images.length).padStart(2, "0")}</div>
+          <motion.img key={selected.images[shot]} initial={{ opacity: 0, scale: .97 }} animate={{ opacity: 1, scale: 1 }} src={selected.images[shot]} alt={`${selected.title}, captura ${shot + 1}`} className="max-h-[82vh] max-w-[92vw] rounded-[20px] border border-white/10 object-contain shadow-2xl" onClick={(event) => event.stopPropagation()} />
+          {selected.images.length > 1 ? <><button onClick={(event) => { event.stopPropagation(); setShot((value) => (value - 1 + selected.images.length) % selected.images.length); }} className="absolute left-3 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md" aria-label="Captura anterior"><ArrowLeft /></button><button onClick={(event) => { event.stopPropagation(); setShot((value) => (value + 1) % selected.images.length); }} className="absolute right-3 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/15 text-white backdrop-blur-md" aria-label="Captura siguiente"><ArrowRight /></button></> : null}
+        </motion.div> : null}
+      </AnimatePresence>
+    </section>
+  );
+};
+
+export default ProjectsCarousel;

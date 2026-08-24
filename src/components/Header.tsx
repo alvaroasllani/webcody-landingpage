@@ -1,72 +1,51 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
+
+const links = [
+  ["inicio", "Inicio"], ["tecnologias", "Stack"], ["proyectos", "Proyectos"], ["contacto", "Contacto"],
+];
 
 const Header = () => {
-  const [activeSection, setActiveSection] = useState('inicio');
+  const [active, setActive] = useState("inicio");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['inicio', 'servicios', 'proyectos', 'contacto'];
-      // The trigger point is 1/3 down the viewport
-      const scrollPosition = window.scrollY + window.innerHeight / 3;
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section);
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
-    return () => window.removeEventListener('scroll', handleScroll);
+    const sections = links.map(([id]) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) setActive(visible.target.id);
+    }, { rootMargin: "-25% 0px -60%", threshold: [0, .2, .6] });
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-nd-black/70 backdrop-blur-md border-b border-nd-border">
-      <div className="container mx-auto px-4 md:px-6 lg:px-12 h-20 flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <img
-            src="/logo.png"
-            alt="WebCody Logo"
-            className="w-8 h-8 grayscale"
-          />
-          <span className="label-font text-nd-textDisplay font-bold text-sm hover:text-nd-accent transition-colors cursor-pointer">
-            [ WEBCODY ]
-          </span>
-        </div>
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-6 md:pt-5">
+      <div className="page-shell glass-edge flex h-16 items-center justify-between rounded-full px-4 md:px-6">
+        <a href="#inicio" className="flex items-center gap-3" aria-label="WebCody, inicio">
+          <span className="grid h-9 w-9 place-items-center rounded-full bg-nd-textDisplay text-[11px] font-extrabold text-nd-black">WC</span>
+          <span className="display-font text-sm font-semibold text-nd-textDisplay">WebCody</span>
+        </a>
 
-        <nav className="hidden md:flex items-center space-x-6 label-font text-xs">
-          {['Inicio', 'Servicios', 'Proyectos', 'Contacto'].map((item) => {
-            const id = item.toLowerCase();
-            const isActive = activeSection === id;
-            return (
-              <a
-                key={item}
-                href={`#${id}`}
-                className={`${isActive ? 'text-nd-textDisplay' : 'text-nd-textSecondary'} hover:text-nd-textDisplay transition-colors duration-200`}
-              >
-                {isActive ? `[ ${item.toUpperCase()} ]` : item.toUpperCase()}
-              </a>
-            );
-          })}
+        <nav className="hidden items-center gap-1 rounded-full bg-black/20 p-1 md:flex" aria-label="Navegación principal">
+          {links.map(([id, label]) => (
+            <a key={id} href={`#${id}`} className={`rounded-full px-4 py-2 text-xs transition-colors ${active === id ? "bg-white/10 text-white" : "text-nd-textSecondary hover:text-white"}`}>
+              {label}
+            </a>
+          ))}
         </nav>
 
-        <div>
-          <button
-            className="nothing-btn-secondary h-10 px-6 text-[11px] bg-nd-black/50"
-            onClick={() => {
-              const contactoSection = document.getElementById('contacto');
-              contactoSection?.scrollIntoView({ behavior: 'smooth' });
-            }}
-          >
-            CONTÁCTANOS
-          </button>
-        </div>
+        <a href="#contacto" className="ghost-button hidden min-h-10 px-4 text-xs sm:inline-flex">Crear algo <ArrowUpRight className="h-4 w-4" /></a>
+        <button onClick={() => setOpen((value) => !value)} className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-white md:hidden" aria-label={open ? "Cerrar menú" : "Abrir menú"} aria-expanded={open}>
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
       </div>
+
+      {open ? (
+        <nav className="page-shell glass-edge mt-2 rounded-[24px] p-3 md:hidden" aria-label="Navegación móvil">
+          {links.map(([id, label]) => <a key={id} href={`#${id}`} onClick={() => setOpen(false)} className="block rounded-2xl px-4 py-3 text-sm text-nd-textPrimary hover:bg-white/5">{label}</a>)}
+        </nav>
+      ) : null}
     </header>
   );
 };

@@ -1,77 +1,25 @@
-import { Github, Facebook } from "lucide-react";
+import { ArrowUpRight, Mail } from "lucide-react";
 
-const TiktokIcon = ({ className }: { className?: string, strokeWidth?: number }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
-  </svg>
-)
-
-const WhatsAppIcon = () => (
-  <svg viewBox="0 0 24 24" className="w-5 h-5 mr-3 fill-current" xmlns="http://www.w3.org/2000/svg">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
-  </svg>
-);
-
-const ContactSection = () => {
-  return (
-    <section id="contacto" className="py-24 bg-transparent relative overflow-hidden border-t border-nd-border">
-      <div className="absolute inset-0 dot-grid opacity-20 pointer-events-none" />
-
-      <div className="container mx-auto px-6 max-w-3xl text-center relative z-10">
-        <div className="mb-12">
-          <span className="label-font text-xs text-nd-textSecondary block mb-4">[ INICIAR_COMUNICACIÓN ]</span>
-          <h2 className="display-font text-4xl md:text-5xl lg:text-6xl text-nd-textDisplay uppercase">
-            HABLEMOS DE<br/>TU PROYECTO
-          </h2>
+const ContactSection = () => (
+  <section id="contacto" className="relative px-4 py-16 md:px-6 md:py-24">
+    <div className="page-shell relative overflow-hidden rounded-[30px] border border-white/10 bg-[#d9f8ff] px-6 py-14 text-[#071019] md:px-12 md:py-20 lg:px-16">
+      <div className="absolute -right-20 -top-48 h-[38rem] w-[38rem] rounded-full border border-[#071019]/10" />
+      <div className="absolute -right-6 -top-20 h-[24rem] w-[24rem] rounded-full border border-[#071019]/10" />
+      <div className="relative grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:items-end">
+        <div>
+          <p className="label-font mb-4 text-[9px] uppercase text-[#344d5b]">Disponible para proyectos</p>
+          <h2 className="display-font max-w-3xl text-balance text-4xl font-medium leading-[.95] tracking-[-.05em] md:text-6xl lg:text-7xl">¿Tienes un proyecto en mente?</h2>
         </div>
-
-        <p className="text-xl text-nd-textPrimary mb-16">
-          Estoy disponible para nuevos retos. Arquitectura técnica, interfaces o producto completo — conversemos.
-        </p>
-
-        <div className="flex flex-col items-center gap-10">
-          <a
-            href="https://wa.me/59172234501"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="nothing-btn-primary flex items-center bg-nd-textDisplay text-nd-black hover:opacity-90 w-full md:w-auto"
-          >
-            <WhatsAppIcon />
-            WHATSAPP
-          </a>
-
-          <div className="text-nd-textSecondary label-font text-xs flex flex-col items-center gap-2">
-            <span>/ ALTERNATIVA_EMAIL /</span>
-            <a
-              href="mailto:alvarowebcody@gmail.com"
-              className="text-lg text-nd-textDisplay hover:underline transition-all mt-2 font-mono"
-            >
-              ALVAROWEBCODY@GMAIL.COM
-            </a>
-          </div>
-
-          <div className="flex gap-6 mt-8 border-t border-nd-border pt-8 w-full justify-center">
-            {[
-              { href: "https://github.com/alvaroasllani", icon: Github, label: 'GITHUB' },
-              { href: "https://www.facebook.com/profile.php?id=61576187071181", icon: Facebook, label: 'FACEBOOK' },
-              { href: "https://www.tiktok.com/@web.cody", icon: TiktokIcon, label: 'TIKTOK' },
-            ].map((social, index) => (
-              <a
-                key={index}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-nd-textSecondary hover:text-nd-textDisplay transition-colors"
-              >
-                <social.icon className="w-5 h-5" strokeWidth={1.5} />
-                <span className="label-font text-[10px] hidden sm:block">{social.label}</span>
-              </a>
-            ))}
+        <div className="lg:pb-3">
+          <p className="max-w-md text-base leading-7 text-[#344d5b]">Cuéntanos qué quieres cambiar, lanzar o mejorar. Nosotros encontramos la forma más clara —y más interesante— de construirlo.</p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+            <a href="https://wa.me/59172234501" target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-[#071019] px-6 text-sm font-semibold text-white transition-transform hover:-translate-y-1">Empezar por WhatsApp <ArrowUpRight className="h-4 w-4" /></a>
+            <a href="mailto:alvarowebcody@gmail.com" className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-[#071019]/20 px-6 text-sm font-semibold transition-colors hover:bg-[#071019]/5"><Mail className="h-4 w-4" /> Enviar email</a>
           </div>
         </div>
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
 export default ContactSection;

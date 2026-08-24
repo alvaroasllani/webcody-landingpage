@@ -1,142 +1,68 @@
-import { ArrowRight, Code, Smartphone, Globe } from "lucide-react";
-import { useState, useEffect } from "react";
+import { ArrowDown, ArrowUpRight, Github, MapPin } from "lucide-react";
+import { lazy, Suspense, useState } from "react";
 
-const HeroSection = () => {
-  const [uptime, setUptime] = useState("99.9");
+const AsciiObject = lazy(() => import("./canvasui/AsciiObject"));
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const values = ["99.8", "99.9", "99.99"];
-      setUptime(values[Math.floor(Math.random() * values.length)]);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
+const focusStack = ["React", "Next.js", "TypeScript", "NestJS", "PostgreSQL"];
 
+const PikachuAscii = () => {
+  const [ready, setReady] = useState(false);
   return (
-    <section id="inicio" className="min-h-screen flex items-center relative overflow-hidden bg-transparent pt-28 pb-12">
-      <div className="absolute inset-0 dot-grid opacity-20 pointer-events-none" />
-
-      <div className="container mx-auto px-4 md:px-6 lg:px-12 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          <div className="lg:col-span-8 flex flex-col items-start text-left">
-            <div className="label-font text-nd-textSecondary text-xs mb-8 flex items-center gap-4">
-              <span>[ V_01.2 ]</span>
-              <span className="w-12 h-px bg-nd-border"></span>
-              <span>SYSTEM_READY</span>
-            </div>
-
-            <h1 className="display-font text-[48px] md:text-[80px] lg:text-[96px] leading-[0.9] tracking-tight text-nd-textDisplay mb-8 uppercase">
-              <span className="block">DESARROLLO</span>
-              <span className="block text-nd-textSecondary">WEB</span>
-              <span className="block text-nd-accent">INNOVADOR.</span>
-            </h1>
-
-            <p className="text-lg md:text-xl text-nd-textPrimary mb-12 max-w-xl pr-8">
-              Creamos experiencias digitales únicas que impulsan tu negocio hacia el futuro. Estructura, funcionalidad y rendimiento.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-6 mb-16 w-full sm:w-auto">
-              <button
-                className="nothing-btn-primary group"
-                onClick={() => {
-                  const proyectosSection = document.getElementById('proyectos');
-                  proyectosSection?.scrollIntoView({ behavior: 'smooth' });
-                }}
-              >
-                [ VER PROYECTOS ]
-                <ArrowRight className="ml-3 w-4 h-4 transition-transform group-hover:translate-x-1" strokeWidth={1.5} />
-              </button>
-              <button
-                className="nothing-btn-secondary"
-                onClick={() => window.open('https://github.com/alvaroasllani', '_blank')}
-              >
-                GITHUB
-                <Globe className="ml-3 w-4 h-4 text-nd-textSecondary" strokeWidth={1.5} />
-              </button>
-            </div>
-
-            <div className="flex flex-wrap gap-x-12 gap-y-6 border-t border-nd-border pt-8 w-full max-w-2xl mb-12">
-              {[
-                { icon: Globe, label: 'WEB_APPS' },
-                { icon: Smartphone, label: 'MÓVIL' },
-                { icon: Code, label: 'SISTEMAS' },
-              ].map((item) => (
-                <div key={item.label} className="flex items-center gap-3">
-                  <div className="w-8 h-8 flex items-center justify-center border border-nd-border-visible text-nd-textPrimary">
-                    <item.icon className="w-4 h-4" strokeWidth={1.5} />
-                  </div>
-                  <span className="label-font text-[11px] text-nd-textSecondary">{item.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Abstract Data Representation (Expressive moment) */}
-          <div className="hidden lg:flex lg:col-span-4 items-center justify-end">
-            <div className="relative w-[550px] h-[350px] flex items-center justify-end">
-              
-              {/* Flat Dotted Mapamundi (Nothing Style) */}
-              <div className="w-[550px] h-[320px] relative pointer-events-none origin-right scale-110">
-                {/* Base dotted mask */}
-                <div 
-                  className="absolute inset-0 opacity-100 transition-opacity duration-1000"
-                  style={{
-                    WebkitMaskImage: "url('/world-map.svg')",
-                    maskImage: "url('/world-map.svg')",
-                    WebkitMaskSize: "contain",
-                    maskSize: "contain",
-                    WebkitMaskRepeat: "no-repeat",
-                    maskRepeat: "no-repeat",
-                    WebkitMaskPosition: "center",
-                    maskPosition: "center",
-                    backgroundImage: "radial-gradient(circle, rgba(255,255,255,1) 1.5px, transparent 1.5px)",
-                    backgroundSize: "7px 7px"
-                  }}
-                />
-                
-                {/* Active Server Nodes (Pulsars) */}
-                <div className="absolute top-[28%] left-[24%] w-1.5 h-1.5 bg-nd-accent rounded-full shadow-[0_0_10px_rgba(255,0,0,0.8)] animate-ping opacity-80" />
-                <div className="absolute top-[42%] left-[48%] w-1.5 h-1.5 bg-nd-accent rounded-full shadow-[0_0_10px_rgba(255,0,0,0.8)] animate-pulse" />
-                <div className="absolute top-[22%] right-[26%] w-1 h-1 bg-nd-textDisplay rounded-full shadow-[0_0_10px_rgba(255,255,255,1)] animate-ping" style={{ animationDelay: '1s' }} />
-                <div className="absolute bottom-[25%] right-[40%] w-1.5 h-1.5 bg-nd-textSecondary rounded-full animate-pulse" />
-              </div>
-
-              {/* Indicator text (Fixed position overlaying the right side) */}
-              <div className="absolute -right-4 bottom-0 flex items-center gap-3 bg-transparent z-10 pointer-events-none">
-                <div className="w-8 h-px bg-nd-border-visible" />
-                <div className="flex flex-col bg-nd-black/80 backdrop-blur-md p-2 border border-nd-border shadow-2xl pointer-events-auto">
-                  <span className="display-font text-3xl text-nd-textDisplay leading-none transition-all duration-300 w-24">
-                    {uptime}
-                  </span>
-                  <span className="label-font text-[10px] text-nd-textSecondary mt-1">SYS_UPTIME %</span>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      {/* Tech Stack Marquee Full Width */}
-      <div className="absolute bottom-0 left-0 w-full overflow-hidden border-t border-nd-border bg-nd-black/40 backdrop-blur-sm py-3 mt-12">
-        <div className="animate-ticker flex gap-10 whitespace-nowrap hover:[animation-play-state:paused] items-center">
-          {[
-            ...['html5', 'tailwindcss', 'javascript', 'python', 'typescript', 'laravel', 'react', 'nextdotjs', 'nestjs', 'php', 'mysql', 'postgresql', 'angular', 'vuedotjs'],
-            ...['html5', 'tailwindcss', 'javascript', 'python', 'typescript', 'laravel', 'react', 'nextdotjs', 'nestjs', 'php', 'mysql', 'postgresql', 'angular', 'vuedotjs']
-          ].map((slug, idx) => (
-            <div key={idx} className="flex items-center gap-3 grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all cursor-crosshair">
-                <img src={`https://cdn.simpleicons.org/${slug}/white`} alt={slug} className="w-5 h-5 object-contain" />
-                <span className="label-font text-[10px] text-nd-textSecondary hidden sm:block">
-                  [ {slug.replace('dotjs', 'js').toUpperCase()} ]
-                </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
+    <>
+      <pre aria-hidden className={`absolute inset-0 grid place-items-center whitespace-pre font-mono text-[10px] leading-[1.05] text-nd-accent transition-opacity duration-700 sm:text-sm ${ready ? "opacity-0" : "opacity-55"}`}>{`       /\\     /\\
+      /  \\___/  \\
+     /           \\
+    |  ●       ●  |
+    |      ᴗ      |
+    |  ◉       ◉  |
+     \\    ⚡    /
+      \\_______/
+       /|     |\\`}</pre>
+      <Suspense fallback={null}><AsciiObject onLoad={() => setReady(true)} src="/ascii/pikachu.svg" className={`h-full w-full transition-opacity duration-700 ${ready ? "opacity-100" : "opacity-0"}`} ascii cellSize={8} cellAspect={0.58} charset=" .:-=+*#%@" colored={false} color="#8cf5ff" contrast={1.8} edgeContrast={4} exposure={1.15} background="" highlight="#988cff" scale={3.3} yOffset={-0.05} floatIntensity={1.2} rotationIntensity={0.6} floatSpeed={1.4} orbit zoom={false} autoRotate autoRotateSpeed={0.7} /></Suspense>
+    </>
   );
 };
+
+const HeroSection = () => (
+  <section id="inicio" className="relative overflow-hidden pb-14 pt-24 md:pb-20 md:pt-28">
+    <div className="blueprint-grid absolute inset-0 opacity-60" />
+    <div className="absolute -right-[26rem] -top-[32rem] h-[68rem] w-[68rem] rounded-full border border-white/[.06]" />
+
+    <div className="page-shell relative z-10">
+      <div className="grid items-center gap-8 pt-5 lg:grid-cols-[.8fr_1.2fr] lg:gap-14 lg:pt-8">
+        <div className="order-2 lg:order-1">
+          <div className="glass-edge relative h-[280px] overflow-hidden rounded-[26px] sm:h-[340px] lg:h-[500px]">
+            <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between border-b border-white/[.08] px-4 py-3 label-font text-[8px] text-nd-textDisabled"><span>ASCII_OBJECT / 025</span><span className="text-nd-accent">DRAG TO ROTATE</span></div>
+            <PikachuAscii />
+            <div className="pointer-events-none absolute bottom-4 left-4 label-font text-[8px] text-nd-textSecondary">PIKACHU.SVG → ASCII</div>
+          </div>
+        </div>
+
+        <div className="order-1 lg:order-2">
+          <div className="mb-5 flex flex-wrap items-center gap-x-5 gap-y-2 label-font text-[8px] text-nd-textSecondary md:mb-7">
+            <span className="flex items-center gap-2 text-nd-accent"><span className="h-1.5 w-1.5 animate-pulse rounded-full bg-nd-accent shadow-[0_0_14px_#8cf5ff]" /> DISPONIBLE PARA PROYECTOS</span>
+            <span className="flex items-center gap-2"><MapPin className="h-3 w-3" /> COCHABAMBA, BOLIVIA</span>
+          </div>
+          <p className="text-sm font-medium text-nd-textSecondary md:text-base">Hola, soy</p>
+          <h1 className="display-font ice-text mt-1 text-[clamp(3.6rem,7vw,7rem)] font-medium leading-[.9] tracking-[-.065em]">Alvaro Asllani.</h1>
+          <p className="display-font mt-3 text-2xl font-medium tracking-[-.035em] text-nd-accent md:text-4xl">Desarrollador full-stack.</p>
+          <p className="mt-6 max-w-2xl text-sm leading-6 text-nd-textSecondary md:text-base md:leading-7">Desarrollo aplicaciones web, sistemas de negocio, e-commerce y experiencias móviles. Trabajo desde la interfaz hasta la base de datos y el deploy.</p>
+
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+            <a href="#proyectos" className="frost-button">Ver proyectos <ArrowDown className="h-4 w-4" /></a>
+            <a href="https://github.com/alvaroasllani" target="_blank" rel="noreferrer" className="ghost-button"><Github className="h-4 w-4" /> GitHub <ArrowUpRight className="h-4 w-4" /></a>
+          </div>
+
+          <div className="mt-7 rounded-[22px] border border-white/[.08] bg-white/[.025] p-4 md:p-5">
+            <div className="flex items-center justify-between gap-4"><div className="flex items-center gap-3"><Github className="h-5 w-5 text-nd-accent" /><div><p className="text-sm font-semibold text-nd-textDisplay">github.com/alvaroasllani</p><p className="mt-0.5 text-[10px] text-nd-textSecondary">Repositorios y código de proyectos</p></div></div><ArrowUpRight className="h-4 w-4 text-nd-textSecondary" /></div>
+            <div className="mt-4 flex flex-wrap gap-2">{focusStack.map((tech) => <span key={tech} className="rounded-full border border-white/[.08] bg-white/[.035] px-3 py-1.5 text-[9px] font-medium text-nd-textPrimary">{tech}</span>)}</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-10 flex items-center gap-4 border-t border-white/[.08] pt-4 label-font text-[8px] text-nd-textDisabled"><span>SCROLL PARA EXPLORAR</span><span className="h-px flex-1 origin-left bg-gradient-to-r from-nd-accent/60 to-transparent [animation:pulse-line_2.5s_ease-in-out_infinite]" /></div>
+    </div>
+  </section>
+);
 
 export default HeroSection;
