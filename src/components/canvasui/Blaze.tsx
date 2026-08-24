@@ -9,6 +9,10 @@ import {
 } from "react";
 
 export interface BlazeOptions {
+  /** Maximum canvas pixel ratio. Lower values reduce GPU cost on large, high-DPI surfaces. */
+  pixelRatio?: number;
+  /** Maximum rendered frames per second. */
+  frameRate?: number;
   /** Height of the blaze zone as a fraction of the screen (0 to 1). */
   height?: number;
   /** Strength of the heat distortion bending the content. */
@@ -54,6 +58,8 @@ export interface BlazeInstance {
 }
 
 const DEFAULTS: Required<BlazeOptions> = {
+  pixelRatio: 2,
+  frameRate: 60,
   height: 0.97,
   distortion: 0.6,
   distortionScale: 0.5,
@@ -498,7 +504,7 @@ export function createBlaze(
   }
 
   function syncCanvasSize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, Math.max(config.pixelRatio, 0.5));
     const width = Math.max(1, Math.round(output.clientWidth * dpr));
     const height = Math.max(1, Math.round(output.clientHeight * dpr));
     if (output.width !== width || output.height !== height) {
@@ -612,6 +618,10 @@ export function createBlaze(
     if (destroyed) return;
     if (!visible) {
       running = false;
+      return;
+    }
+    if (now - lastTime < 1000 / Math.max(config.frameRate, 1)) {
+      raf = requestAnimationFrame(frame);
       return;
     }
     const delta = Math.min((now - lastTime) / 1000, 1 / 30);

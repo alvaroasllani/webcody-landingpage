@@ -34,7 +34,7 @@ const HeroSection = () => (
           <div className="glass-edge relative h-[280px] overflow-hidden rounded-[26px] sm:h-[340px] lg:h-[500px]">
             <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between border-b border-white/[.08] px-4 py-3 label-font text-[8px] text-nd-textDisabled"><span>ASCII_OBJECT / 025</span><span className="text-nd-accent">DRAG TO ROTATE</span></div>
             <PikachuAscii />
-            <div className="pointer-events-none absolute bottom-4 left-4 label-font text-[8px] text-nd-textSecondary">PIKACHU.SVG → ASCII</div>
+            <div className="pointer-events-none absolute bottom-4 left-4 z-10 label-font text-[8px] text-nd-textSecondary">PIKACHU.SVG → ASCII</div>
           </div>
         </div>
 

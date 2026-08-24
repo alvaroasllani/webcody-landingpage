@@ -5,17 +5,21 @@ import ServicesSection from "@/components/ServicesSection";
 import ProjectsCarousel from "@/components/ProjectsCarousel";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import GlobalBlaze from "@/components/GlobalBlaze";
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
-      <Header />
-      <HeroSection />
-      <TechStackSection />
-      <ProjectsCarousel />
-      <ServicesSection />
-      <ContactSection />
-      <Footer />
+    <div className="relative min-h-screen">
+      <GlobalBlaze />
+      <div className="relative z-10">
+        <Header />
+        <HeroSection />
+        <TechStackSection />
+        <ProjectsCarousel />
+        <ServicesSection />
+        <ContactSection />
+        <Footer />
+      </div>
     </div>
   );
 };

@@ -4,8 +4,6 @@ import { useEffect, useRef, useState } from "react";
 
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 export interface AsciiObjectOptions {
   /** URL of the asset to display: GLB/glTF, SVG, PNG, JPEG, WebP, or GIF. Object URLs from a file input work too. The format is sniffed from the bytes, not the extension. */
@@ -1099,11 +1097,6 @@ export function createAsciiObject(
   let loadToken = 0;
   let disposed = false;
 
-  const loader = new GLTFLoader();
-  const draco = new DRACOLoader();
-  draco.setDecoderPath(config.dracoDecoderPath);
-  loader.setDRACOLoader(draco);
-
   function applyRoughness() {
     if (!model) return;
     model.traverse((node) => {
@@ -1169,10 +1162,18 @@ export function createAsciiObject(
       if (!kind) throw new Error("Unrecognized asset format");
 
       if (kind === "glb" || kind === "gltf") {
+        const [{ GLTFLoader }, { DRACOLoader }] = await Promise.all([
+          import("three/addons/loaders/GLTFLoader.js"),
+          import("three/addons/loaders/DRACOLoader.js"),
+        ]);
+        if (disposed || token !== loadToken) return;
+        const loader = new GLTFLoader();
+        const draco = new DRACOLoader();
         draco.setDecoderPath(config.dracoDecoderPath);
+        loader.setDRACOLoader(draco);
         const resourcePath = src.slice(0, src.lastIndexOf("/") + 1);
         const data = kind === "glb" ? buffer : new TextDecoder().decode(bytes);
-        const gltf = await loader.parseAsync(data, resourcePath);
+        const gltf = await loader.parseAsync(data, resourcePath).finally(() => draco.dispose());
         if (disposed || token !== loadToken) {
           disposeObject(gltf.scene);
           return;
@@ -1444,7 +1445,6 @@ export function createAsciiObject(
       if (roomScene) disposeObject(roomScene);
       envTarget?.dispose();
       pmrem.dispose();
-      draco.dispose();
       target.dispose();
       cellTarget.dispose();
       cellMaterial.dispose();
